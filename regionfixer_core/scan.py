@@ -44,6 +44,7 @@ from progressbar import ProgressBar, Bar, AdaptiveETA, SimpleProgress
 import regionfixer_core.constants as c
 from regionfixer_core.util import entitle
 from regionfixer_core import world
+from regionfixer_core.world import ScannedRegionFile
 
 
 
@@ -626,9 +627,10 @@ def console_scan_loop(scanners, scan_titles, verbose):
                                 fn = result.filename
                                 fol = result.folder
                                 print("Scanned {0: <12} {1:.<43} {2}/{3}".format(join(fol, fn), status, counter, total))
-                                for s in c.CHUNK_PROBLEMS:
-                                    print("{0}: {1}".format(
-                                        c.CHUNK_PROBLEMS_ABBR[s], json.dumps([x[0] for x in result.list_chunks(s)])))
+                                if type(result) == ScannedRegionFile:
+                                    for s in c.CHUNK_PROBLEMS:
+                                        print("{0}: {1}".format(
+                                            c.CHUNK_PROBLEMS_ABBR[s], json.dumps([x[0] for x in result.list_chunks(s)])))
                     if not verbose:
                         pbar.finish()
                 except KeyboardInterrupt as e:
